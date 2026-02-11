@@ -1,0 +1,8 @@
+__pycache__/
+*.py[cod]
+venv/
+db.sqlite3
+.vscode/
+ai_engine/exports/
+web_app/ai_models/*.pkl
+web_app/ai_models/*.xlsx

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EssenceAI | Parfüm Önerici</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #f4f7f6; font-family: 'Segoe UI', sans-serif; }
+        .hero-banner { background: #212529; color: white; padding: 60px 0; margin-bottom: 40px; border-bottom: 5px solid #d4af37; }
+        .main-card { border-radius: 20px; border: none; box-shadow: 0 8px 30px rgba(0,0,0,0.05); }
+        .perfume-item { border-left: 4px solid #d4af37; transition: 0.3s; }
+        .perfume-item:hover { transform: translateX(5px); background-color: #fff; }
+    </style>
+</head>
+<body>
+
+    <div class="hero-banner text-center">
+        <h1 class="display-5 fw-bold" style="letter-spacing: 4px;">ESSENCE AI</h1>
+        <p class="lead opacity-75">Yapay Zeka Destekli Koku Analizi</p>
+    </div>
+
+    <div class="container mb-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-7">
+                <div class="card main-card p-4 p-md-5 bg-white">
+                    
+                    <form action="/recommend/" method="POST" class="mb-5">
+                        {% csrf_token %}
+                        <div class="input-group input-group-lg">
+                            <input list="parfums" name="parfum_adi" class="form-control" placeholder="Hangi parfümü seviyorsun?" required autocomplete="off">
+                            <datalist id="parfums">
+                                {% for p in parfumler %}
+                                    <option value="{{ p }}">
+                                {% endfor %}
+                            </datalist>
+                            <button class="btn btn-dark px-4" type="submit">KEŞFET</button>
+                        </div>
+                        <small class="text-muted mt-2 d-block text-center">Yenileme yapıldığında arama sıfırlanır.</small>
+                    </form>
+
+                    {% if oneriler %}
+                        <div class="results mt-4">
+                            <h5 class="mb-4 text-dark fw-bold border-bottom pb-2">
+                                <span class="text-warning text-uppercase">{{ secilen }}</span> İçin Benzerler:
+                            </h5>
+                            
+                            <div class="list-group list-group-flush">
+                                {% for o in oneriler %}
+                                    <div class="list-group-item perfume-item mb-3 shadow-sm bg-light py-3 d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <div class="fw-bold text-uppercase">{{ o.ad }}</div>
+                                            <div class="small text-muted">{{ o.marka }}</div>
+                                        </div>
+                                        <span class="badge rounded-pill bg-dark opacity-50">Eşleşti</span>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endif %}
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
